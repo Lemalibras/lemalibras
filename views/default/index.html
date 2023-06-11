@@ -1,0 +1,85 @@
+{{extend 'layout.html'}} {{block header}}
+<div
+  class="jumbotron jumbotron-fluid background"
+  style="
+    background-color: #333;
+    color: white;
+    padding: 30px;
+    word-wrap: break-word;
+  "
+>
+  <div class="container center">
+    <h1>LemaLibras</h1>
+    <br />
+    <form class="my-2 my-lg-0">
+      <label>Informe a palavra para mostrar exemplos em libras</label><br />
+      <input
+        class="form-control mr-sm-2"
+        type="text"
+        name="busca"
+        placeholder="Informe a palavra. Ex: aprender"
+      />
+    </form>
+  </div>
+</div>
+{{end}}
+
+{{if word:}}
+<h2>Busca pela palavra <span style="color:red;">{{=word}}</span></h2>
+{{if exemplo and len(rows)>0:}}
+<div class="alert alert-danger" role="alert">
+  Esta palavra ainda não está pronta. Mas foi encontrada em alguns exemplos de uso
+</div>
+{{pass}}
+
+{{if rows:}}
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Palavra</th>
+        <th scope="col">Sinal</th>
+        <th scope="col">Video Sinal</th>
+        <th scope="col-2">Exemplo de Uso</th>
+        <th scope="col">Video Exemplo de Uso</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{for row in rows:}}
+      <tr>
+        <th scope="row">{{=row['entrada']}}</th>
+        <td>{{=row['sinal']}}</td>
+        <td>
+          <video id="video" controls="controls" preload="none" width="300">
+            <source
+              id="mp4"
+              src="{{=URL(f='download',args=[row['video_sinal']])}}"
+              type="video/mp4"
+            />
+            <p>Your user agent does not support the HTML5 Video element.</p>
+          </video>
+        </td>
+        <td>{{=row['exemplo_uso']}}</td>
+        <td>
+          <video id="video" controls="controls" preload="none" width="300">
+            <source
+              id="mp4"
+              src="{{=URL(f='download',args=[row['video_exemplo']])}}"
+              type="video/mp4"
+            />
+            <p>Your user agent does not support the HTML5 Video element.</p>
+          </video>
+        </td>
+      </tr>
+      {{pass}}
+    </tbody>
+  </table>
+ 
+</div>
+{{else:}}
+<div class="alert alert-danger" role="alert">
+  Esta palavra ainda não está pronta
+</div>
+{{pass}}
+
+{{pass}}
